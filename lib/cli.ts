@@ -56,6 +56,7 @@ let allowedNames = [
   'testobjectUser',
   'testobjectKey',
   'directConnect',
+  'retryDriverLaunch',
   'firefoxPath',
   'noGlobals',
   'specs',

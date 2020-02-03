@@ -36,6 +36,25 @@ describe('direct connect', () => {
       }
       expect(errorFound).toBe(true);
     });
+
+    it('should try twice when retry enabled', async () => {
+      const config = {
+        directConnect: true,
+        retryDriverLaunch: true,
+        capabilities: { browserName: 'chrome' },
+        chromeDriver: '/foo/bar/chromedriver'
+      };
+      let errorFound = false;
+      try {
+        webdriver = new Direct(config);
+        await webdriver.getNewDriver();
+      } catch(e) {
+        errorFound = true;
+        expect(e.code).toBe(BrowserError.CODE);
+      }
+      expect()
+      expect(errorFound).toBe(true);
+    });
   });
 
   describe('with chromedriver drivers', () => {

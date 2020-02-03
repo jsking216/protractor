@@ -236,8 +236,8 @@ export interface Config {
    */
   firefoxPath?: string;
   /**
-   * Path to the firefox application binary. If null, will attempt to find
-   * firefox in the default locations.
+   *  If true, Protractor will attempt to launch WebDriver if it crashes during
+   *  session creation.
    */
   retryDriverLaunch?: boolean;
 
