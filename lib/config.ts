@@ -235,6 +235,11 @@ export interface Config {
    * firefox in the default locations.
    */
   firefoxPath?: string;
+  /**
+   * Path to the firefox application binary. If null, will attempt to find
+   * firefox in the default locations.
+   */
+  retryDriverLaunch?: boolean;
 
   // ---------------------------------------------------------------------------
   // ----- What tests to run ---------------------------------------------------
