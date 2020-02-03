@@ -4,9 +4,9 @@
  *  it down, and setting up the driver correctly.
  */
 import * as fs from 'fs';
-import {Capabilities, WebDriver} from 'selenium-webdriver';
+import {Capabilities, WebDriver } from 'selenium-webdriver';
 import {Driver as DriverForChrome, ServiceBuilder as ServiceBuilderForChrome} from 'selenium-webdriver/chrome';
-import {Driver as DriverForFirefox, ServiceBuilder as SerivceBuilderForFirefox} from 'selenium-webdriver/firefox';
+import {Driver as DriverForFirefox, ServiceBuilder as ServiceBuilderForFirefox} from 'selenium-webdriver/firefox';
 
 import {ChromeDriver, GeckoDriver} from 'webdriver-manager';
 
@@ -76,8 +76,17 @@ export class Direct extends DriverProvider {
 
         const chromeService =
             (new ServiceBuilderForChrome(chromeDriverFile) as ServiceBuilderForChrome).build();
-        driver = await DriverForChrome.createSession(
-            new Capabilities(this.config_.capabilities), chromeService);
+        try {
+          driver = await DriverForChrome.createSession(
+              new Capabilities(this.config_.capabilities), chromeService);
+        }
+        catch (e) {
+          if (this.config_.retryDriverLaunch) {
+            driver = await DriverForChrome.createSession(
+              new Capabilities(this.config_.capabilities), chromeService);
+          }
+          else throw e;
+        }
         break;
       case 'firefox':
         let geckoDriverFile: string;
@@ -99,9 +108,18 @@ export class Direct extends DriverProvider {
                   '. Run \'webdriver-manager update\' to download binaries.');
         }
 
-        let firefoxService = new SerivceBuilderForFirefox(geckoDriverFile).build();
-        driver = await DriverForFirefox.createSession(
-            new Capabilities(this.config_.capabilities), firefoxService);
+        let firefoxService = new ServiceBuilderForFirefox(geckoDriverFile).build();
+        try {
+          driver = await DriverForFirefox.createSession(
+              new Capabilities(this.config_.capabilities), firefoxService);
+        }
+        catch (e) {
+          if (this.config_.retryDriverLaunch) {
+            driver = await DriverForFirefox.createSession(
+              new Capabilities(this.config_.capabilities), firefoxService);
+          }
+          else throw e;
+        }
         break;
       default:
         throw new BrowserError(
